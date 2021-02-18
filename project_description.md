@@ -37,14 +37,13 @@ Another example could be the use of dialectal forms in urban and rural speech,
 or the use of a certain grammatical construction by females and males, 
 or the pronunciation of certain patterns by native and L2 speakers.    
 
-It is important to note that we expect you to think about not just one, but several variables that can (potentially) explain the behaviour of the linguistic unit in focus. 
 For example, in the case of the rival units, the choice between them can be explained by certain contextual variables (e.g. the part of speech of the neighbors, 
 syntactics patterns), features of the rival units themselves (e.g. the gender of the noun, the tense of the verb), genre and register of the text, 
-sociolinguistic parameters (e.g. age, sex, profession, education, place of birth). We expect you to explore at least three explanatory variables of any kind 
-in your case study. For inspiration, you can look at some examples of the data sets in the open data repositories [Trolling](https://opendata.uit.no/dataverse/trolling),
-[OSF](), [PsyArXiv](https://psyarxiv.com/), Kaggle, etc. 
+sociolinguistic parameters (e.g. age, sex, profession, education, place of birth). For inspiration, you can look at some examples of the data sets in the open data repositories [Trolling](https://opendata.uit.no/dataverse/trolling), [OSF](), [PsyArXiv](https://psyarxiv.com/), Kaggle, etc. As another source of motivation, you can look at the description of one of the grammatical categories in Russian [RusGram](http://rusgram.ru/index), pick variables mentioned their as associated with/interacting with/explaining the use of the vatiable in focus and make a quantitative case study based on examples from the [Russian National Corpus](https://ruscorpora.ru/), [Aranea](http://aranea.juls.savba.sk/), or other available corpora.
 
-Other research methodologies can be dicussed with instructors. We are ok with the re-use of your previous research but only if it demonstrates some "added" value in terms of statistical analysis, visualization, the increment of the dataset size and variables. If you re-use some previous research, please state it clearly and explain what was done before and what is done as a part of this course project. 
+It is important to note that we expect you to think about not just one, but several variables that can (potentially) explain the behaviour of the linguistic unit in focus. Please explore at least three explanatory variables of any kind in your case study. 
+
+We are ok with the re-use of your previous research but only if it demonstrates some "added" value in terms of statistical analysis, visualization, the increment of the dataset size and variables. If you re-use some previous research, please state it clearly and explain what was done before and what is done as a part of this course project. 
 
 #### Parts of the research
 
@@ -88,12 +87,6 @@ The students can either compile the dataset specifically for this research paper
 
 Corpus data samples and experimental data sets are usually annotated manually. However, you can do any kind of data preprocessing and exploit ways to automate data annotation, if you wish. The quality of annotation and its interpretability will be assessed.  
 
-### Course project schedule
-
-* May 20. Research pre-registration. You have to submit preliminary version of the paper that includes first three part of the research: a hypothesis, research design and description of data collection method. This paper will be assessed and you will recieve feedback that should be addressed in the final version.
-* June 10. Final paper submission.
-* June 10-30. Oral presentation (10 min presentation, 5 min questions). Exam date to be assigned by the office.
-
 ### Project paper and presentation assessment 
 The following features of your works will be assessed:
 
@@ -106,11 +99,11 @@ The following features of your works will be assessed:
 * Linguistic interpretation of the modeling results, explanation of conflicting results obtained with different models
 * Bonus for research quality and extra materials
 * Oral presentation. You can prepare additional presentation or just use pictures/tables from your paper
-* Penalty for late pre-registration, late final paper submission (before the exam date)
+* Penalty for late pre-registration, late final paper submission
 
 [Examples of project papers](https://agricolamz.github.io/2018-MAG_R_course/projects-previous-case-studies.html) (of different quality, for orientation only).
 
-Please, do not hesitate to contact instructors to discuss any aspects of your work. We are here to help you!
+Please, do not hesitate to contact instructors to discuss research methodologies, data, and any other aspects of your work. We are here to help you!
 
 [^2]: The use of language R is one of the criteria of evaluation. If you use any statistical tool other than R in your project, please discuss it with the examiner. Python, C, etc. scripts used to collect and pre-process your data can also be provided, but are not subject of evaluation.  
  
