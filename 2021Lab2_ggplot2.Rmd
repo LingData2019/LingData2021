@@ -1,0 +1,380 @@
+---
+title: "Visualizations"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction to visualization: ggplot2
+
+### Packages and data 
+```{r libraries}
+library(tidyverse)
+```
+
+We will use the `homo` dataset from Hau 2007. Experiment consisted of a perception and judgment test aimed at measuring the correlation between acoustic cues and perceived sexual orientation. Naïve Cantonese speakers were asked to listen to the Cantonese speech samples collected in Experiment and judge whether the speakers were gay or heterosexual. There are 14 speakers and following parameters:
+
+* [s] duration (s.duration.ms)
+* vowel duration (vowel.duration.ms)
+* fundamental frequencies mean (F0) (average.f0.Hz)
+* fundamental frequencies range (f0.range.Hz)
+* percentage of homosexual impression (perceived.as.homo)
+* percentage of heterosexal impression (perceived.as.hetero)
+* speakers orientation (orientation)
+* speakers age (age)
+
+```{r}
+homo <- read_csv("https://raw.githubusercontent.com/LingData2019/LingData2020/master/data/orientation.csv")
+head(homo)
+```
+
+### Basic principles:
+
+* `gg` in `ggplot2` - Grammar of Graphics, a multilayered language for data visualization (Leland Wilkinson 2005, see also the article "A Layered grammar of graphics" by Hadley Wickham (2010) that introduced the package `ggplot2`).
+* 3 basic layers:
+  * data 
+  * geom
+  * `aes` - aestetics, how to map the data to geom, e.g. x, y, color, fill, size
+* 2 additional layers
+  + `position = "identity"` - position adjustment, e.g. jitter, dodge
+  + `stat = "identity"` - statistical transformations
+* also `coord`, `scales`, `facets`, `theme`
+* default settings that are reproduced in each layer
+
+### Empty plot
+
+```{r}
+ggplot(data = homo)
+```
+
+### Scatterplot
+
+```{r}
+homo %>%
+   ggplot(aes(s.duration.ms, vowel.duration.ms)) +
+   geom_point()
+```
+
+### Scatterplot: color
+
+```{r}
+homo %>%
+  ggplot(aes(s.duration.ms, vowel.duration.ms,
+             color = orientation)) +
+  geom_point()
+```
+
+
+### Scatterplot: shape
+
+```{r}
+homo %>%
+  ggplot(aes(s.duration.ms, vowel.duration.ms,
+             shape = orientation)) +
+  geom_point(color = "darkred")
+```
+
+
+### Scatterplot: size
+
+```{r}
+homo %>%
+  ggplot(aes(s.duration.ms, vowel.duration.ms,
+             size = age)) +
+  geom_point()
+```
+Change the color of points and plot them by shape
+
+### Scatterplot: text
+
+```{r}
+homo %>%
+  mutate(label = ifelse(orientation == "homo","⚣", "⚤")) %>% 
+  ggplot(aes(s.duration.ms, vowel.duration.ms, label = label, fill = orientation)) +
+  geom_label()
+```
+
+Use color instead of fill:
+
+```{r}
+homo %>%
+  mutate(label = ifelse(orientation == "homo","⚣", "⚤")) %>% 
+  ggplot(aes(s.duration.ms, vowel.duration.ms, label = label, color = orientation)) +
+  geom_text()
+```
+
+
+### Title, subtitle, caption
+
+```{r}
+homo %>%
+  ggplot(aes(s.duration.ms, vowel.duration.ms)) +
+  geom_point()+
+  labs(title = "length of [s] vs. length of vowels",
+       subtitle = "based on 14 speakers of Cantonese",
+       caption = "data from [Hau 2007]")
+```
+
+
+### Axis labels
+
+```{r}
+homo %>%
+  ggplot(aes(s.duration.ms, vowel.duration.ms)) +
+  geom_point()+
+  xlab("duration of [s] in ms")+
+  ylab("vowel duration in ms")
+```
+
+
+### Theme
+
+```{r}
+homo %>%
+  ggplot(aes(s.duration.ms, vowel.duration.ms)) +
+  geom_point()+
+  xlab("duration of [s] in ms") +
+  ylab("vowel duration in ms") +
+  theme_minimal()
+```
+
+
+### (Log) scale
+
+```{r}
+freq <- read_csv("https://raw.githubusercontent.com/LingData2019/LingData/master/data/freqrnc2011_1000.csv")
+freq %>%
+  ggplot(aes(rank, freq_ipm)) +
+  geom_point(alpha = .5) +
+  labs(x = "rank", y = "ipm") +
+  theme_minimal()
+```
+Use scale_y_log10() to transform the y axis:
+
+```{r}
+freq %>%
+  ggplot(aes(1:1000, freq_ipm)) +
+  geom_point() +
+  xlab("rank") +
+  ylab("log(ipm)") +
+  scale_y_log10() +
+  theme_minimal()
+```
+
+
+### rugs
+
+```{r}
+homo %>%
+  ggplot(aes(s.duration.ms, vowel.duration.ms, color = orientation)) +
+  geom_point() +
+  geom_rug() +
+  theme_minimal()
+```
+
+
+### lines
+
+```{r}
+homo %>%
+  ggplot(aes(s.duration.ms, vowel.duration.ms)) +
+  geom_point() +
+  geom_hline(yintercept = mean(homo$vowel.duration.ms))+
+  geom_vline(xintercept = 60) +
+  theme_minimal()
+```
+
+Change line types and color:
+
+```{r}
+homo %>%
+  ggplot(aes(s.duration.ms, vowel.duration.ms)) +
+  geom_point() +
+  geom_hline(yintercept = 120, linetype = 4) +
+  geom_vline(xintercept = 60, color = "blue") +
+  theme_minimal()
+```
+
+
+### Annotate!
+
+```{r}
+homo %>%
+  ggplot(aes(s.duration.ms, vowel.duration.ms)) +
+  geom_point()+
+  annotate(geom = "rect", xmin = 77, xmax = 79,
+           ymin = 117, ymax = 122, fill = "red", alpha = 0.2) + 
+  annotate(geom = "text", x = 78, y = 125,
+           label = "Who is that?\n Outlier?") +
+  theme_minimal()
+```
+
+
+### Ablines
+
+```{r}
+homo %>%
+  ggplot(aes(s.duration.ms, vowel.duration.ms)) +
+  geom_point() +
+  geom_hline(yintercept = 120, linetype = 4) +
+  geom_vline(xintercept = 60, color = "blue") +
+  geom_smooth(method = "lm") +
+  theme_minimal()
+```
+
+Try geom_smooth() without arguments now!
+
+### Facets
+
+`facet_wrap` -- cf. `group_by` in dplyr
+
+```{r}
+homo %>%
+  ggplot(aes(s.duration.ms, vowel.duration.ms)) +
+  geom_point() +
+  geom_hline(yintercept = 120, linetype = 4) +
+  geom_vline(xintercept = 60, color = "blue") +
+  geom_smooth(method = "lm") +
+  facet_wrap(orientation~.)
+  theme_minimal()
+```
+
+Another option: `facet_grid`
+
+```{r}
+homo %>%
+  ggplot(aes(s.duration.ms, vowel.duration.ms, colour = orientation, fill = orientation)) +
+  geom_point() +
+  geom_hline(yintercept = 120, linetype = 4) +
+  geom_vline(xintercept = 60, color = "blue") +
+  geom_smooth(method = "lm") +
+  facet_grid(orientation~.)
+  theme_minimal()
+```
+Note that `color` and `fill` depend on orientation and are put within the main `aes`
+
+### Task 1:
+In dataset diamonds calculate mean value of the variable price for each cut and visualise it using argument shape = 5.
+
+
+## Categorical data
+
+### Barplots
+
+```{r}
+homo %>%
+  ggplot(aes(orientation)) +
+  geom_bar()
+```
+
+
+Make barplots of `age` for each speaker:
+
+```{r}
+homo %>%
+  ggplot(aes(speaker, age)) +
+  geom_col()
+```
+
+Fill bars by orientation:
+
+```{r}
+homo %>%
+  ggplot(aes(speaker, age, fill = orientation)) +
+  geom_col()
+```
+
+
+### Aggregated data
+
+The count statistics is use by default here.
+
+```{r}
+homo %>%
+  ggplot() +
+  geom_bar(aes(age, fill = orientation))
+```
+Plot all data in one bar:
+
+```{r}
+homo %>%
+  ggplot() +
+  geom_bar(aes(x="", fill = orientation), width = 0.2)
+```
+```{r}
+homo %>%
+  mutate(age = as.factor(age)) %>%
+  ggplot() +
+  geom_bar(aes(x="", fill = age), width = 0.2)
+```
+
+NB the width argument of the barplot.
+
+### Piechart
+
+```{r}
+homo %>%
+  mutate(age = as.factor(age)) %>%
+  ggplot() +
+  geom_bar(aes(x="", fill = age)) +
+  coord_polar(theta = "y") +
+  theme_void()
+```
+
+### Boxplots
+
+```{r}
+theme_set(theme_bw()) # set black-and-white theme
+homo %>%
+  ggplot(aes(orientation, s.duration.ms)) +
+  geom_boxplot()
+```
+
+
+### Boxplots: add points
+
+```{r}
+homo %>%
+  ggplot(aes(orientation, s.duration.ms)) +
+  geom_boxplot()+
+  geom_point()
+```
+
+
+### Jitter
+
+```{r}
+homo %>%
+  ggplot(aes(orientation, s.duration.ms)) +
+  geom_violin() +
+  geom_jitter(width = 0.2)
+```
+
+### Density plot
+
+```{r}
+homo %>%
+  mutate(s.cat = ifelse(s.duration.ms > 60, "Longies", "Shorties"), 
+         vowel.cat = ifelse(vowel.duration.ms > 120, "Longies", "Shorties")) %>%
+  group_by(s.cat, vowel.cat) %>% 
+  summarise(number = n()) %>% 
+  ggplot(aes(orientation, s.duration.ms)) +
+  geom_violin() +
+  geom_jitter(width = 0.2)
+```
+
+### Save as file
+
+The plot can be stored  as a variable. One can recycle it many times with different options.
+In order to create a pdf file, put the file name 
+
+```{r}
+pdf("plot.pdf")
+homo %>%
+  ggplot(aes(orientation, s.duration.ms)) +
+  geom_boxplot() +
+  geom_jitter(width = 0.2)
+dev.off()
+```
