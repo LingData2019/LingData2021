@@ -367,6 +367,7 @@ Interpret the summary of this model. Write down your conclusions.
 
 **Violin plot**
 -- is similar to box plots, except that they also show the approximation of probability density of the data at different values. Typically, violin plots will include a marker for the median of the data and a box indicating the interquartile range, as in standard box plots.
+
 ```{r}
 ToothGrowth$dose <- as.factor(ToothGrowth$dose)
 p <- ggplot(ToothGrowth, aes(x=dose, y=len)) + 
@@ -384,12 +385,15 @@ p + geom_jitter(shape=16, position=position_jitter(0.2))
 **Line plot**
 You can create a line plot of mean +/- error using the function ggline()[in ggpubr].
 Basic line plots of means +/- se with jittered points:
+
 ```{r}
 library(ggpubr)
 ggline(diamonds[1:300,], x = "color", y = "price", 
        add = c("mean_se", "jitter"))
 ```
+
 Split and color by group:
+
 ```{r}
 ggline(diamonds, x = "color", y = "price", 
        add = "mean_se",
